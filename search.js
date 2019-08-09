@@ -1,20 +1,21 @@
+/**
+ * To remove all console.log() please create a folder named newfiles on your computer in the same directory where 
+ * project is present.
+ */
+
+
 const fs = require("fs");
 
-/**please change onlyDir value to name of your project folder */
+/**onlyDir variable shouls be your name of project folder */
 var onlyDir = "files";
-/**enter the path of your project here */
+/**alldir is array it must contain first element as path to your project folder */
 var allDir=["/home/netzwelt/Desktop/allwork/search/files/"];
-/**you have to create a new folder with name newfiles in same directory where project is present */
-/**it will run recursively to loop through all folders and files you can see status in command terminal 
- */
-/** mention your type of file here if java replace it with .py. Keep in mind dot is important */
-var typeOfFile=".js";
 
 async function update(folder){
     var count=0;
     var aa = fs.readdirSync(folder);
     aa.forEach(file => {
-        var found = file.search(typeOfFile);
+        var found = file.search(".js");
         if (found == -1) {
             console.log("DIRECTORY FOUND-----"+file);
             var name = folder + file + "/";
@@ -24,18 +25,19 @@ async function update(folder){
             fs.mkdirSync(filename);
            
         }else{
-            console.log("Reading file-------" + file);
+            console.log("Reading-------" + file);
             var data = fs.readFileSync(folder + file);
             data = data.toString();
             var newStr = data.replace(/console\.log\(([^)]+)\);/img, "");
             var filename = folder.replace(onlyDir, "newfiles");
             fs.writeFileSync(filename + file, newStr);
-            console.log("Writing file-------" + filename + file);
+            console.log("wririnf file-------" + filename + file);
         }
         count++;
         if(count===aa.length){
             allDir.shift();
-            if(allDir.length!=0){    
+            console.log(allDir);
+            if(allDir.length!=0){
                 update(allDir[0]);
             }
            
